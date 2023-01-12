@@ -3,10 +3,12 @@
 from KGC import *
 from AA import *
 
-f = Setup()
-print(f.shape)
+E = Setup()
 
 aa = AA()
 aa.AASetup()
+aa.S()
 
+SK = aa.SecretKey(E[0])
+print(SK.shape)
 

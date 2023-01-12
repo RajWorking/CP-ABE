@@ -7,6 +7,6 @@ def Setup():
 
     def E(x):
         X = np.array([[x**i for i in range(1, N)]])
-        return poly_mod(u + X @ G).flatten()
+        return poly_add(u, X @ G).flatten()
 
     return np.array([E(i) for i in range(1, N+1)])

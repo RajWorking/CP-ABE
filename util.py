@@ -39,6 +39,18 @@ def poly_mod(exp):
     res = res[-f:] % q
     return res
 
+def poly_add(s1, s2):
+    """
+        t = s1 + s2
+    """
+    return poly_mod(np.polyadd(s1, s2))
+
+def poly_mul(s1, s2):
+    """
+    t = s1 * s2
+    """
+    return poly_mod(np.convolve(s1, s2))
+
 
 def poly_op(a, s1, s2):
     """
