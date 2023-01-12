@@ -27,4 +27,4 @@ u = np.array([[random.randrange(0, q) for _ in range(f)]])
 # total number of attributes
 attr = 10 # [10, 20, 30, 40]
 
-d = 20
+V = 20

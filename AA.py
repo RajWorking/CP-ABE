@@ -1,6 +1,6 @@
 import random
 from algo import RTrapGen
-from config import attr, q, f, d, m
+from config import attr, q, f, V, m
 from util import *
 import numpy as np
 
@@ -12,7 +12,7 @@ class AA:
 
     def __init__(self) -> None:
         self._C = np.array([[random.randrange(0, q)
-                             for _ in range(f)] for _ in range(d)])
+                             for _ in range(f)] for _ in range(V)])
 
     def AASetup(self):
         self.A, self._T = RTrapGen()
