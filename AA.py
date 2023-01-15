@@ -28,9 +28,9 @@ class AA:
         '''
         z has shape (V, 1)
         C has shape (m, f, V)
-        returns P = C @ z, of shape (f * m)
+        returns P = C @ z, of shape (m * f)
         '''
-        return (self._C @ z).T
+        return (self._C @ z)
 
     def S(self):
         '''
@@ -42,17 +42,41 @@ class AA:
 
     def SecretKey(self, E):
         delta = E
-        SK = np.zeros((attr + 1, f, m))
+        self._SK = np.zeros((attr + 1, m, f))
 
         for i in range(attr):
             z = np.array([random.randrange(0, q) for _ in range(V)])
             y = self._P(z)
-            SK[i] = y
+            self._SK[i] = y
 
-            n = poly_dotprod(self.b_plus[i], y.T) if self.X[i] == 1 else poly_dotprod(self.b_minus[i], y.T)
+            n = poly_dotprod(self.b_plus[i], y) if self.X[i] == 1 else poly_dotprod(
+                self.b_minus[i], y)
 
             delta = poly_add(E, -1 * n)
 
-        SK[attr] = gen_multiple_polynomials(m).T
+        self._SK[attr] = gen_multiple_polynomials(m)
 
-        return SK
+    def Decrypt(self, cipher, F, W):
+        g = random.getrandbits(attr)
+        g = np.array([1 & g >> i for i in range(attr)])
+
+        L = poly_dotprod(cipher['c_A'], self._SK[attr])
+
+        for i in range(attr):
+            L = poly_add(L, g[i]*cipher['c_{0}_2'.format(i)])
+            
+            if W[i] == 1:
+                L1 = poly_dotprod(cipher['c_{0}_1'.format(i)], self._SK[i])
+                L = poly_add(L, L1)
+            elif self.X[i] == 1:
+                L1 = poly_dotprod(cipher['c_plus_{0}_1'.format(i)], self._SK[i])
+                L = poly_add(L, L1)
+            else:
+                L1 = poly_dotprod(cipher['c_minus_{0}_1'.format(i)], self._SK[i])
+                L = poly_add(L, L1)
+        
+        phi = cipher['c_0']
+        phi -= Lagrange(1) * L
+        phi = [1 if x>=(q//4) else 0 for x in phi]
+        
+        return phi

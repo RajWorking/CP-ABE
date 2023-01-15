@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from config import q, f
+from config import q, f, N
 
 ####################################
 
@@ -72,3 +72,15 @@ def poly_op(a, s1, s2):
         t = a * s1 + s2
     """
     return poly_mod(np.polyadd(np.convolve(s1, a), s2))
+
+####################################
+
+# Lagrange Polynomial
+
+def Lagrange(theta):
+    f = 1
+    for i in range(1, N+1):
+        if i != theta:
+            f = f * (-i) / (theta - i)
+    
+    return f

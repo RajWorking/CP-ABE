@@ -9,20 +9,24 @@ class User:
     User class
     '''
 
-    def W(self, X):
+    def AccessControl(self, X):
         '''
         define access structure using attributes
         '''
         mask = random.getrandbits(attr)
-        self.W_plus = np.array([X[i] & mask >> i for i in range(attr)])
-        self.W_minus = np.array([X[i] & (1 ^ self.W_plus[i])
+        self.W = np.array([X[i] & mask >> i for i in range(attr)])
+        
+        mask = random.getrandbits(attr)
+        self.W_plus = np.array([self.W[i] & mask >> i for i in range(attr)])
+        self.W_minus = np.array([self.W[i] & (1 ^ self.W_plus[i])
                                 for i in range(attr)])
+        
 
     def Encrypt(self, phi, A, b_plus, b_minus):
         '''
         encrypting data
         '''
-        F = np.array([[[random.randrange(0, q)
+        self.F = np.array([[[random.randrange(0, q)
                         for _ in range(f)]
                        for _ in range(m)]
                       for _ in range(attr)])
@@ -42,11 +46,11 @@ class User:
         e_A = gen_multiple_polynomials(m)
         c_A = np.array([poly_add(poly_mul(A[i], d), e_A[i]) for i in range(m)])
 
-        out = {'c0': c0, 'c_A': c_A}
+        out = {'c_0': c0, 'c_A': c_A}
 
         for i in range(attr):
-            c_2 = poly_dotprod(F[i][1:], Sigma[1:])
-            c_2 = poly_add(c_2, poly_mul(F[i][0], ud))
+            c_2 = poly_dotprod(self.F[i][1:], Sigma[1:])
+            c_2 = poly_add(c_2, poly_mul(self.F[i][0], ud))
             c_2 = poly_add(c_2, gen_polynomial())
             out['c_{0}_2'.format(i)] = c_2
 

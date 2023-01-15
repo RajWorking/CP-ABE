@@ -16,16 +16,16 @@ b = 17
 k = math.floor(math.log(q, b) + 1)
 m = k + 2
 
-h = [1 << (i-1) for i in range(1, k+1)]
+h = [b << (i-1) for i in range(1, k+1)]
 
 # Gaussian Params
-sigma = 2
-sigma_s = 3
+# sigma = 2
+# sigma_s = 3
 
 u = np.array([random.randrange(0, q) for _ in range(f)])
 
 # total number of attributes
-# [10, 20, 30, 40]
+# [5, 10, 15, 20]
 attr = 10
 
-V = 20
+V = 10
