@@ -49,12 +49,7 @@ class AA:
             y = self._P(z)
             SK[i] = y
 
-            n_poly = np.array([poly_mul(np.array(poly)[0], np.array(poly)[1]) for poly in zip(self.b_plus[i], y.T)]) if self.X[i] == 1 else np.array(
-                [poly_mul(np.array(poly)[0], np.array(poly)[1]) for poly in zip(self.b_minus[i], y.T)])
-
-            n = [0]
-            for j in n_poly:
-                n = poly_add(n, j)
+            n = poly_dotprod(self.b_plus[i], y.T) if self.X[i] == 1 else poly_dotprod(self.b_minus[i], y.T)
 
             delta = poly_add(E, -1 * n)
 

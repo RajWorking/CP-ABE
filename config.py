@@ -22,9 +22,10 @@ h = [1 << (i-1) for i in range(1, k+1)]
 sigma = 2
 sigma_s = 3
 
-u = np.array([[random.randrange(0, q) for _ in range(f)]])
+u = np.array([random.randrange(0, q) for _ in range(f)])
 
 # total number of attributes
-attr = 10 # [10, 20, 30, 40]
+# [10, 20, 30, 40]
+attr = 10
 
 V = 20

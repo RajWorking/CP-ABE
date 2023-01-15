@@ -39,21 +39,36 @@ def poly_mod(exp):
     res = res[-f:] % q
     return res
 
+
 def poly_add(s1, s2):
     """
         t = s1 + s2
     """
     return poly_mod(np.polyadd(s1, s2))
 
+
 def poly_mul(s1, s2):
     """
-    t = s1 * s2
+        t = s1 * s2
     """
     return poly_mod(np.convolve(s1, s2))
 
 
+def poly_dotprod(s1, s2):
+    """
+        t = s1[0]*s2[0] + s1[1]*s2[1] ... + s1[m-1]*s2[m-1]
+    """
+    n_poly = np.array([poly_mul(np.array(poly)[0], np.array(poly)[1])
+             for poly in zip(s1, s2)])
+    n = [0]
+    for j in n_poly:
+        n = poly_add(n, j)
+    
+    return n
+
+
 def poly_op(a, s1, s2):
     """
-    t = a * s1 + s2
+        t = a * s1 + s2
     """
     return poly_mod(np.polyadd(np.convolve(s1, a), s2))
