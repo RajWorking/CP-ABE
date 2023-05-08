@@ -25,7 +25,7 @@ h = [b << (i-1) for i in range(1, k+1)]
 u = np.array([random.randrange(0, q) for _ in range(f)])
 
 # total number of attributes
-# [5, 10, 15, 20]
+# [10, 15, 20, 25]
 attr = 10
 
 V = 10
